@@ -1,0 +1,217 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animated Nav Menu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #f0f0f0, #e6f7ff);
+      scroll-behavior: smooth;
+      padding-top: 70px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #0f2027;
+      color: #fff;
+      z-index: 1000;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    nav.scrolled {
+      background: #2c5364;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+    }
+
+    .menu li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .menu li:hover,
+    .menu li.active {
+      background: #00c6ff;
+      color: #fff;
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        background: #0f2027;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+
+    section {
+      height: 100vh;
+      padding: 60px 30px;
+    }
+
+    section:nth-child(even) {
+      background: #e0f7fa;
+    }
+
+    section:nth-child(odd) {
+      background: #fff8e1;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 17px;
+      color: #555;
+    }
+
+    #backToTop {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      padding: 12px;
+      background: #00c6ff;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+    }
+
+    #backToTop:hover {
+      background: #0072ff;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <div class="nav-container">
+      <ul class="menu" id="menu">
+        <li onclick="scrollToSection('intro')"><i class="fas fa-rocket"></i> Intro</li>
+        <li onclick="scrollToSection('projects')"><i class="fas fa-laptop-code"></i> Projects</li>
+        <li onclick="scrollToSection('team')"><i class="fas fa-users"></i> Team</li>
+        <li onclick="scrollToSection('connect')"><i class="fas fa-phone"></i> Connect</li>
+      </ul>
+      <i class="fas fa-bars hamburger" onclick="toggleMenu()"></i>
+    </div>
+  </nav>
+
+  <section id="intro">
+    <h2>🚀 Introduction</h2>
+    <p>Welcome to this dynamic and responsive UI example with scroll-triggered nav styling!</p>
+  </section>
+
+  <section id="projects">
+    <h2>💻 Projects</h2>
+    <p>Explore a wide variety of innovative and exciting web development projects.</p>
+  </section>
+
+  <section id="team">
+    <h2>👥 Team</h2>
+    <p>Meet our skilled and passionate developers, designers, and collaborators.</p>
+  </section>
+
+  <section id="connect">
+    <h2>📬 Connect</h2>
+    <p>Get in touch with us to collaborate or start a project together today.</p>
+  </section>
+
+  <button id="backToTop" onclick="scrollToTop()"><i class="fas fa-chevron-up"></i></button>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('show');
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('menu').classList.remove('show');
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      const backToTop = document.getElementById('backToTop');
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+      backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+      highlightActiveLink();
+    });
+
+    function highlightActiveLink() {
+      const sections = document.querySelectorAll('section');
+      const links = document.querySelectorAll('.menu li');
+      let index = sections.length;
+      while (--index && window.scrollY + 80 < sections[index].offsetTop) {}
+      links.forEach(link => link.classList.remove('active'));
+      links[index].classList.add('active');
+    }
+
+    highlightActiveLink();
+  </script>
+
+</body>
+</html>
